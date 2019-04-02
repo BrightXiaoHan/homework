@@ -435,16 +435,28 @@ class Agent(object):
         for i, re in enumerate(re_n):
             q_nt[:len(re)] = re
 
-        for i in max_t:
+        for i in range(1, max_t):
             gamma_matrix[:, i:] *= self.gamma
         
         if self.reward_to_go:
-            q_n = q_nt * gamma_matrix
-            q_n = q_n.sum(1)
-            q_n = np.concatenate()
+            q_n = []
+            q_nt *= gamma_matrix
+            q_nt = q_nt.sum(1)
+            for i, re in enumerate(re_n):
+                q_n.extend([q_nt[i]] * len(re))
+
+            q_n = np.array(q_n)
 
         else:
-            raise NotImplementedError
+            q_n = []
+            gamma_vector = gamma_matrix[0]
+            for i, re in enumerate(re_n):
+                t_len = len(re)
+                for j in range(t_len)
+                    q_n.append(np.sum(gamma_vector[:t_len-j] * re[j:]))
+
+            q_n = np.array(q_n)
+
         #----------------------------------My Solution Start-----------------------------#
         
         return q_n
